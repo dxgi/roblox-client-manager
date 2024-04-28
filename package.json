@@ -1,0 +1,87 @@
+{
+  "name": "roblox-client-manager",
+  "displayName": "roblox-client-manager",
+  "description": "The \"roblox-client-manager\" seamlessly coordinates all active Roblox clients, facilitating smooth code execution through Visual Studio Code integration.",
+  "version": "1.0.0",
+  "engines": {
+    "vscode": "^1.88.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "roblox-client-manager.run",
+        "title": "Run",
+        "icon": {
+          "dark": "./resources/run.png",
+          "light": "./resources/run.png"
+        }
+      },
+      {
+        "command": "roblox-client-manager.runAll",
+        "title": "Run All",
+        "icon": {
+          "dark": "./resources/run-all.png",
+          "light": "./resources/run.png"
+        }
+      }
+    ],
+    "views": {
+      "explorer": [
+        {
+          "id": "roblox-client-manager",
+          "name": "Roblox Client Manager"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "roblox-client-manager.runAll",
+          "group": "navigation",
+          "when": "view == roblox-client-manager"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "roblox-client-manager.run",
+          "group": "inline",
+          "when": "view == roblox-client-manager"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "yarn run package",
+    "compile": "webpack",
+    "watch": "webpack --watch",
+    "package": "webpack --mode production --devtool hidden-source-map",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "yarn run compile-tests && yarn run compile && yarn run lint",
+    "lint": "eslint src --ext ts",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.6",
+    "@types/node": "18.x",
+    "@types/vscode": "^1.88.0",
+    "@typescript-eslint/eslint-plugin": "^7.7.1",
+    "@typescript-eslint/parser": "^7.7.1",
+    "@vscode/test-cli": "^0.0.8",
+    "@vscode/test-electron": "^2.3.9",
+    "eslint": "^8.57.0",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.4.5",
+    "webpack": "^5.91.0",
+    "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "@types/ws": "^8.5.10",
+    "ws": "^8.17.0"
+  }
+}
