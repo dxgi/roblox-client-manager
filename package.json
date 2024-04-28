@@ -2,7 +2,12 @@
   "name": "roblox-client-manager",
   "displayName": "roblox-client-manager",
   "description": "The \"roblox-client-manager\" seamlessly coordinates all active Roblox clients, facilitating smooth code execution through Visual Studio Code integration.",
-  "version": "1.0.0",
+  "version": "1.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dxgi/roblox-client-manager"
+  },
+  "publisher": "dxgi",
   "engines": {
     "vscode": "^1.88.0"
   },
