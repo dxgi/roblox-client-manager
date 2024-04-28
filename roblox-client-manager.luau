@@ -1,3 +1,7 @@
+if not game:IsLoaded() then
+    game.Loaded:Wait();
+end
+
 local HttpService = game:GetService('HttpService');
 
 local Player = game:GetService('Players').LocalPlayer;
@@ -20,7 +24,7 @@ if Socket then
     Socket:Send(
         HttpService:JSONEncode(
             {
-                op = 'OP_IDENTIFY',
+                op = "OP_IDENTIFY",
                 data = {
                     player = {
                         name = Name
