@@ -6,9 +6,11 @@ local HttpService = game:GetService('HttpService');
 
 local Player = game:GetService('Players').LocalPlayer;
 
+local MarketplaceService = game:GetService('MarketplaceService');
+
 local Name = Player.DisplayName;
 
-local Game = game.Name;
+local Game = MarketplaceService:GetProductInfo(game.PlaceId).Name;
 
 if not Name then
     Name = Player.Name;
@@ -19,6 +21,12 @@ if not Game then
 end
 
 local Socket = WebSocket.connect('ws://localhost:6969');
+
+while not Socket do
+    wait(1);
+
+    Socket = WebSocket.connect('ws://localhost:6969');
+end
 
 if Socket then
     Socket:Send(
