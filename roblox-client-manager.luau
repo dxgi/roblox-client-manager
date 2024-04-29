@@ -80,6 +80,8 @@ local function Activate()
             Socket = nil;
 
             IsRunning = false;
+
+            print('[roblox-client-manager.vsix] Attemping to reconnect...');
         end);
     else
         _, Socket = pcall(TryConnect);
@@ -89,7 +91,15 @@ end
 while true do
     wait(1);
 
+    print(Socket);
+
+    print(IsRunning);
+
+    print('[roblox-client-manager.vsix] Checking...');
+
     if not Socket then
+        print('[roblox-client-manager.vsix] Attemping to connect...');
+
         _, Socket = pcall(TryConnect);
     elseif not IsRunning then
         IsRunning = true;
