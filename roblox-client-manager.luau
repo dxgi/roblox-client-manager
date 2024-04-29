@@ -24,7 +24,7 @@ local TryConnect = function()
     return WebSocket.connect('ws://localhost:6969');
 end
 
-local _, Socket = pcall(TryConnect);
+local _, Socket = false, nil;
 
 local IsRunning = false;
 
