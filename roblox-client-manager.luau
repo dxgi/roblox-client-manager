@@ -28,6 +28,8 @@ local _, Socket = false, nil;
 
 local IsRunning = false;
 
+local IsDebugging = true;
+
 local function Activate()
     if Socket then
         Socket:Send(
@@ -80,28 +82,39 @@ local function Activate()
             Socket = nil;
 
             IsRunning = false;
-
-            print('[roblox-client-manager.vsix] Attemping to reconnect...');
         end);
     else
         _, Socket = pcall(TryConnect);
     end
 end
 
+local function Heartbeat()
+    Socket:Send(
+        HttpService:JSONEncode(
+            {
+                op = "OP_HEARTBEAT",
+                data = {}
+            }
+        )
+    );
+end
+
+local Retries = 1;
+
 while true do
     wait(1);
 
-    print(Socket);
+    local NotConnected = not Socket or not pcall(Heartbeat);
 
-    print(IsRunning);
-
-    print('[roblox-client-manager.vsix] Checking...');
-
-    if not Socket then
-        print('[roblox-client-manager.vsix] Attemping to connect...');
+    if NotConnected then
+        print('[roblox-client-manager] Attemping to reconnect... (' .. Retries .. 'x)');
 
         _, Socket = pcall(TryConnect);
-    elseif not IsRunning then
+
+        IsRunning = false;
+
+        Retries = Retries + 1;
+    elseif not NotConnected and not IsRunning then
         IsRunning = true;
 
         pcall(Activate);

@@ -57,6 +57,18 @@ export default class RobloxClientProvider implements vscode.TreeDataProvider<Rob
 
                         break;
                     }
+                    case 'OP_HEARTBEAT': {
+                        socket.send(
+                            JSON.stringify(
+                                {
+                                    op: 'OP_HEARTBEAT_ACK',
+                                    data: {}
+                                }
+                            )
+                        );
+
+                        break;
+                    }
                     default: {
                         vscode.window.showErrorMessage(`[RobloxClientProvider.ts] Couldn't resolve the following opcode: ${message.op}.`);
 
