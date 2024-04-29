@@ -8,4 +8,4 @@ The "roblox-client-manager" is a tool designed to seamlessly coordinate all acti
 
 2. **Add script to autoexec folder**:
    - Download the script from [roblox-client-manager.luau](https://github.com/dxgi/roblox-client-manager/blob/main/roblox-client-manager.luau).
-   - Place the downloaded script into your autoexec folder.
+   - Place the downloaded script into your autoexec folder ( You need an executor, obviously. ).
