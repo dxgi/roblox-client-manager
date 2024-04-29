@@ -20,64 +20,72 @@ if not Game then
     Game = 'Unknown';
 end
 
-local Socket = WebSocket.connect('ws://localhost:6969');
-
-while not Socket do
-    wait(1);
-
-    Socket = WebSocket.connect('ws://localhost:6969');
+local TryConnect = function()
+    return WebSocket.connect('ws://localhost:6969');
 end
 
-if Socket then
-    Socket:Send(
-        HttpService:JSONEncode(
-            {
-                op = "OP_IDENTIFY",
-                data = {
-                    player = {
-                        name = Name
-                    },
-                    game = {
-                        name = Game
+local _, Socket = pcall(TryConnect);
+
+local function Activate()
+    if Socket then
+        Socket:Send(
+            HttpService:JSONEncode(
+                {
+                    op = "OP_IDENTIFY",
+                    data = {
+                        player = {
+                            name = Name
+                        },
+                        game = {
+                            name = Game
+                        }
                     }
                 }
-            }
-        )
-    );
+            )
+        );
 
-    Socket.OnMessage:Connect(function(input: string)
-        local message = HttpService:JSONDecode(input);
+        Socket.OnMessage:Connect(function(input: string)
+            local message = HttpService:JSONDecode(input);
 
-        if typeof(message) == 'table' then
-            if typeof(message.op) ~= 'string' or typeof(message.data) ~= 'table' then
-                error('Invalid Data');
-            else
-                local op = message.op;
+            if typeof(message) == 'table' then
+                if typeof(message.op) ~= 'string' or typeof(message.data) ~= 'table' then
+                    error('Invalid Data');
+                else
+                    local op = message.op;
 
-                local data = message.data;
+                    local data = message.data;
 
-                if op == 'OP_EXECUTE' then
-                    local source = data.source;
+                    if op == 'OP_EXECUTE' then
+                        local source = data.source;
 
-                    if source then
-                        pcall(function()
-                            local func, err = loadstring(source, 'roblox-client-manager');
+                        if source then
+                            pcall(function()
+                                local func, err = loadstring(source, 'roblox-client-manager');
 
-                            if not func then
-                                error(err);
-                            else
-                                func();
-                            end
-                        end)
+                                if not func then
+                                    error(err);
+                                else
+                                    func();
+                                end
+                            end)
+                        end
+                    elseif op === 'OP_PONG' then
+
                     end
                 end
             end
-        end
-    end);
+        end);
 
-    Socket.OnClose:Connect(function()
-        Socket = nil;
+        Socket.OnClose:Connect(function()
+            Socket = nil;
+        end);
 
-        warn('Connection Closed');
-    end);
+        while true do
+
+        ennd
+    else
+        _, Socket = pcall(TryConnect);
+    end
 end
+
+Activate();
