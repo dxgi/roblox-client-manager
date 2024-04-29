@@ -58,21 +58,6 @@
           "when": "view == roblox-client-manager"
         }
       ]
-    },
-    "configuration": {
-      "title": "roblox-client-manager",
-      "properties": {
-        "roblox-client-manager.host": {
-          "type": "string",
-          "default": "localhost",
-          "description": "The host of the Roblox client manager server."
-        },
-        "roblox-client-manager.port": {
-          "type": "number",
-          "default": 6969,
-          "description": "The port of the Roblox client manager server."
-        }
-      }
     }
   },
   "scripts": {

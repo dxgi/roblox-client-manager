@@ -26,6 +26,8 @@ end
 
 local _, Socket = pcall(TryConnect);
 
+local IsRunning = false;
+
 local function Activate()
     if Socket then
         Socket:Send(
@@ -76,10 +78,22 @@ local function Activate()
 
         Socket.OnClose:Connect(function()
             Socket = nil;
+
+            IsRunning = false;
         end);
     else
         _, Socket = pcall(TryConnect);
     end
 end
 
-Activate();
+while true do
+    wait(1);
+
+    if not Socket then
+        _, Socket = pcall(TryConnect);
+    elseif not IsRunning then
+        IsRunning = true;
+
+        pcall(Activate);
+    end
+end
