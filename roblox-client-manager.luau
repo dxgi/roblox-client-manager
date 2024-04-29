@@ -69,8 +69,6 @@ local function Activate()
                                 end
                             end)
                         end
-                    elseif op === 'OP_PONG' then
-
                     end
                 end
             end
@@ -79,10 +77,6 @@ local function Activate()
         Socket.OnClose:Connect(function()
             Socket = nil;
         end);
-
-        while true do
-
-        ennd
     else
         _, Socket = pcall(TryConnect);
     end
