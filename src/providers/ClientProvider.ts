@@ -30,8 +30,12 @@ export default class ClientProvider implements vscode.TreeDataProvider<RobloxCli
         });
 
         resolver.on(IEvent.Disconnect, (playerName) => {
-            if (this.cache.has(playerName))
-                this.cache.delete(playerName);
+            if (!this.cache.has(playerName))
+                return;
+            
+            this.cache.delete(playerName);
+
+            this.refresh();
         });
     }
 
