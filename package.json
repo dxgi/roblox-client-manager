@@ -2,7 +2,7 @@
   "name": "roblox-client-manager",
   "displayName": "roblox-client-manager",
   "description": "The \"roblox-client-manager\" seamlessly coordinates all active Roblox clients, facilitating smooth code execution through Visual Studio Code integration.",
-  "version": "1.0.6",
+  "version": "1.2.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/dxgi/roblox-client-manager"
@@ -20,19 +20,11 @@
     "commands": [
       {
         "command": "roblox-client-manager.run",
-        "title": "Run",
-        "icon": {
-          "dark": "./resources/run.png",
-          "light": "./resources/run.png"
-        }
+        "title": "Run"
       },
       {
         "command": "roblox-client-manager.runAll",
-        "title": "Run All",
-        "icon": {
-          "dark": "./resources/run-all.png",
-          "light": "./resources/run.png"
-        }
+        "title": "Run All"
       }
     ],
     "views": {
@@ -58,6 +50,21 @@
           "when": "view == roblox-client-manager"
         }
       ]
+    },
+    "configuration": {
+      "title": "roblox-client-manager",
+      "properties": {
+        "roblox-client-manager.host": {
+          "type": "string",
+          "default": "localhost",
+          "description": "The host for the server to listen on."
+        },
+        "roblox-client-manager.port": {
+          "type": "number",
+          "default": 6969,
+          "description": "The port for the server to listen on."
+        }
+      }
     }
   },
   "scripts": {

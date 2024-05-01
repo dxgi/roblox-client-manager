@@ -1,41 +1,37 @@
 if not game:IsLoaded() then
-    game.Loaded:Wait();
+    game.Loaded:Wait()
 end
+
+--#region Services
 
 local HttpService = game:GetService('HttpService');
 
-local Player = game:GetService('Players').LocalPlayer;
-
 local MarketplaceService = game:GetService('MarketplaceService');
 
-local Name = Player.DisplayName;
+local Player = game:GetService('Players').LocalPlayer;
+
+--#endregion
+
+--#region Variables
+
+local Name = Player.DisplayName or Player.Name or 'Unknown';
 
 local Game = MarketplaceService:GetProductInfo(game.PlaceId).Name;
-
-if not Name then
-    Name = Player.Name;
-end
-
-if not Game then
-    Game = 'Unknown';
-end
-
-local TryConnect = function()
-    return WebSocket.connect('ws://localhost:6969');
-end
 
 local _, Socket = false, nil;
 
 local IsRunning = false;
 
-local IsDebugging = true;
+--#endregion
 
-local function Activate()
+--#region Functions
+
+local function Activate(TryConnect)
     if Socket then
         Socket:Send(
             HttpService:JSONEncode(
                 {
-                    op = "OP_IDENTIFY",
+                    op = 'OP_IDENTIFY',
                     data = {
                         player = {
                             name = Name
@@ -92,31 +88,37 @@ local function Heartbeat()
     Socket:Send(
         HttpService:JSONEncode(
             {
-                op = "OP_HEARTBEAT",
+                op = 'OP_HEARTBEAT',
                 data = {}
             }
         )
     );
 end
 
-local Retries = 1;
+--#endregion
 
-while true do
-    wait(1);
+return function(host: string)
+    local TryConnect = function()
+        return WebSocket.connect(host)
+    end
 
-    local NotConnected = not Socket or not pcall(Heartbeat);
+    local Retries = 1;
 
-    if NotConnected then
-        print('[roblox-client-manager] Attemping to reconnect... (' .. Retries .. 'x)');
+    while true do
+        wait(1);
 
-        _, Socket = pcall(TryConnect);
+        if not Socket or not pcall(Heartbeat) then
+            print('[roblox-client-manager] Attemping to reconnect... (' .. Retries .. 'x)');
 
-        IsRunning = false;
+            IsRunning = false;
 
-        Retries = Retries + 1;
-    elseif not NotConnected and not IsRunning then
-        IsRunning = true;
+            Retries += 1;
 
-        pcall(Activate);
+            _, Socket = pcall(TryConnect);
+        elseif not IsRunning then
+            IsRunning = true;
+
+            pcall(Activate, TryConnect);
+        end
     end
 end

@@ -8,17 +8,19 @@ The "roblox-client-manager" is a tool designed to seamlessly coordinate all acti
 
 -- 2. Place the following script below to your executor's autoexec folder.
 
-pcall(function()
-  local func, err = loadstring(
-    game:HttpGet(
-      "https://raw.githubusercontent.com/dxgi/roblox-client-manager/main/roblox-client-manager.luau"
-    )
-  );
+local host = 'ws://localhost:6969';
 
-  if not func then
-    error(err)
-  else
-    func();
-  end
+pcall(function()
+    local func, err = loadstring(
+		game:HttpGet(
+    		'https://raw.githubusercontent.com/dxgi/roblox-client-manager/main/roblox-client-manager.luau'
+      	)
+    );
+  
+    if not func then
+      	error(err)
+    else
+		func()(host);
+    end
 end)
 ```
