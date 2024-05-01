@@ -26,15 +26,15 @@ local host = 'ws://localhost:6969';
 
 pcall(function()
     local func, err = loadstring(
-		game:HttpGet(
-    		'https://raw.githubusercontent.com/dxgi/roblox-client-manager/main/roblox-client-manager.luau'
+	    game:HttpGet(
+    	    'https://raw.githubusercontent.com/dxgi/roblox-client-manager/main/roblox-client-manager.luau'
       	)
     );
   
     if not func then
       	error(err)
     else
-		func()(host);
+	func()(host);
     end
 end)
 ```
