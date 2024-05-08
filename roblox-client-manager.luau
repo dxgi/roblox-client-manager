@@ -117,6 +117,8 @@ return function(host: string)
         wait(1);
 
         if not Socket or not pcall(Heartbeat) then
+            print('Connection Lost, Retrying...');
+
             IsRunning = false;
 
             Retries += 1;
