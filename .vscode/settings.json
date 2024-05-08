@@ -5,9 +5,31 @@
         "dist": false // set this to true to hide the "dist" folder with the compiled JS files
     },
     "search.exclude": {
-        "out": true, // set this to false to include "out" folder in search results
-        "dist": true // set this to false to include "dist" folder in search results
+        "out": true,
+        "dist": true
     },
-    // Turn off tsc task auto detection since we have the necessary tasks as npm scripts
-    "typescript.tsc.autoDetect": "off"
+    "typescript.tsc.autoDetect": "off",
+    "roblox-client-manager": {
+        "executable": {
+            /*
+                - automatic (default): Automatically select first available executable installation in current directory.
+                - manual (recommended): Manually select the executable installation to use.
+                - specific: Specify the path to the executable installation to use.
+            */
+            "mode": "automatic"
+        },
+        "instance": {
+            /*
+                - single: allow single instance to be used.
+                - multi: allow multiple instances to be used.
+            */
+            "mode": "single",
+            
+            /*
+                - limit: limit the number of instances to be used.
+            */
+            "limit": 1
+        },
+        "version": "latest"
+    }
 }

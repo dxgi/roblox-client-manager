@@ -5,7 +5,9 @@ import EventEmitter from 'events';
 export enum IEvent {
     Identify = 'OP_IDENTIFY',
     Heartbeat = 'OP_HEARTBEAT',
-    Disconnect = 'OP_DISCONNECT'
+    Disconnect = 'OP_DISCONNECT',
+
+    Error = 'OP_ERROR'
 }
 
 export interface IMessage {
@@ -20,6 +22,10 @@ export interface IHandshake {
     game: {
         name: string;
     }
+}
+
+export interface IError {
+    message: string;
 }
 
 export default class RobloxResolver {
@@ -71,6 +77,13 @@ export default class RobloxResolver {
                             )
                         );
                         
+                        break;
+                    }
+                    case IEvent.Error: {
+                        const { message } = data as IError;
+
+                        console.log(`[${identifier}] ${message}`);
+
                         break;
                     }
                     default: {

@@ -63,7 +63,16 @@ local function Activate(TryConnect)
                                 local func, err = loadstring(source, 'roblox-client-manager');
 
                                 if not func then
-                                    error(err);
+                                    Socket:Send(
+                                        HttpService:JSONEncode(
+                                            {
+                                                op = 'OP_ERROR',
+                                                data = {
+                                                    message = err
+                                                }
+                                            }
+                                        )
+                                    );
                                 else
                                     func();
                                 end
@@ -108,8 +117,6 @@ return function(host: string)
         wait(1);
 
         if not Socket or not pcall(Heartbeat) then
-            print('[roblox-client-manager] Attemping to reconnect... (' .. Retries .. 'x)');
-
             IsRunning = false;
 
             Retries += 1;
