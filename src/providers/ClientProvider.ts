@@ -14,7 +14,7 @@ export class RobloxClient extends vscode.TreeItem {
 }
 
 export default class ClientProvider implements vscode.TreeDataProvider<RobloxClient> {
-    private resolver: RobloxResolver;
+    public resolver: RobloxResolver;
 
     private cache: Map<string, RobloxClient> = new Map;
 

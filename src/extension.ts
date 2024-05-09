@@ -2,6 +2,7 @@ import * as vscode                      from 'vscode';
 
 import RobloxResolver                   from './resolvers/RobloxResolver';
 import ClientProvider, { RobloxClient } from './providers/ClientProvider';
+import CommandProvider from './providers/CommandProvider';
 
 export function activate(context: vscode.ExtensionContext) {
 	const host = vscode.workspace.getConfiguration('roblox-client-manager').get('host', 'localhost');
@@ -12,48 +13,13 @@ export function activate(context: vscode.ExtensionContext) {
 
 	const provider = new ClientProvider(resolver);
 
-	const run = (client: RobloxClient, source: string) => {
-		const socket = resolver.resolve(client.label);
-
-		if (!socket)
-			return vscode.window.showErrorMessage(`Couldn't resolve the client ${client.label}.`);
-
-		socket.send(
-			JSON.stringify(
-				{
-					op: 'OP_EXECUTE',
-					data: {
-						source
-					}
-				}
-			)
-		);
-	};
+	const commands = new CommandProvider(provider);
 
 	vscode.window.registerTreeDataProvider('roblox-client-manager', provider);
 
-	vscode.commands.registerCommand('roblox-client-manager.run', (client: RobloxClient) => {
-		const editor = vscode.window.activeTextEditor;
+	vscode.commands.registerCommand('roblox-client-manager.run', commands.Single);
 
-		if (!editor)
-			return vscode.window.showErrorMessage('Couldn\'t find an active text editor.');
-
-		const source = editor.document.getText();
-
-		run(client, source);
-	});
-
-	vscode.commands.registerCommand('roblox-client-manager.runAll', () => {
-		const editor = vscode.window.activeTextEditor;
-
-		if (!editor)
-			return vscode.window.showErrorMessage('Couldn\'t find an active text editor.');
-
-		const source = editor.document.getText();
-
-		for (const client of provider.getChildrens())
-			run(client, source);
-	});
+	vscode.commands.registerCommand('roblox-client-manager.runAll', commands.Multiple);
 }
 
 export function deactivate() {}
