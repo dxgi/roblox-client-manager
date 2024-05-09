@@ -82,7 +82,7 @@ export default class RobloxResolver {
                     case IEvent.Error: {
                         const { message } = data as IError;
 
-                        console.log(`[${identifier}] ${message}`);
+                        vscode.window.showErrorMessage(`[${identifier}] ${message}`);
 
                         break;
                     }
